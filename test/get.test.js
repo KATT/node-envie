@@ -1,6 +1,5 @@
 const Joi = require('joi')
 const Envie = require('../')
-const { expect } = require('chai')
 
 describe('new Envie({descriptions...}, {...values})', () => {
   const description = {
@@ -18,18 +17,18 @@ describe('new Envie({descriptions...}, {...values})', () => {
   describe('.get(key)', () => {
     describe('when the value is not set up', () => {
       it('returns undefined', () => {
-        expect(envie.get('not_defined')).to.equal(undefined)
+        expect(envie.get('not_defined')).toBe(undefined)
       })
 
       describe('but there is a default value', () => {
         it('returns the default value', () => {
-          expect(envie.get('with_default')).to.equal('hello world')
+          expect(envie.get('with_default')).toBe('hello world')
         })
 
         describe('but noDefaults option is true', () => {
           const envie = Envie(description, {}, { noDefaults: true })
           it('returns undefined', () => {
-            expect(envie.get('with_default')).to.equal(undefined)
+            expect(envie.get('with_default')).toBe(undefined)
           })
         })
       })
@@ -37,19 +36,19 @@ describe('new Envie({descriptions...}, {...values})', () => {
 
     describe('when the value is valid', () => {
       it('returns the value', () => {
-        expect(envie.get('defined')).to.equal(8)
+        expect(envie.get('defined')).toBe(8)
       })
 
       describe('but not the correct type', () => {
         it('returns the re-cast value', () => {
-          expect(envie.get('to_cast')).to.equal(8)
+          expect(envie.get('to_cast')).toBe(8)
         })
       })
     })
 
     describe('when the value is invalid', () => {
       it('throws', () => {
-        expect(() => envie.get('invalid')).to.throw(/invalid is not valid/i)
+        expect(() => envie.get('invalid')).toThrowError(/invalid is not valid/i)
       })
     })
   })

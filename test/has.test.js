@@ -1,6 +1,5 @@
 const Joi = require('joi')
 const Envie = require('../')
-const { expect } = require('chai')
 
 describe('new Envie({descriptions...})', () => {
   const description = {
@@ -15,19 +14,19 @@ describe('new Envie({descriptions...})', () => {
   describe('.has(key)', () => {
     describe('when the value is not set up', () => {
       it('returns false', () => {
-        expect(envie.has('not_defined')).to.equal(false)
+        expect(envie.has('not_defined')).toBe(false)
       })
     })
 
     describe('when the value is valid', () => {
       it('returns true', () => {
-        expect(envie.has('defined')).to.equal(true)
+        expect(envie.has('defined')).toBe(true)
       })
     })
 
     describe('when the value is invalid', () => {
       it('returns false', () => {
-        expect(envie.has('invalid')).to.equal(false)
+        expect(envie.has('invalid')).toBe(false)
       })
     })
   })

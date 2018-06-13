@@ -1,7 +1,7 @@
 require('colors')
-const { expect } = require('chai')
+
 const Joi = require('joi')
-const Descriptor = require('../lib/descriptor')
+const Descriptor = require('../src/descriptor')
 
 describe('Descriptor.description(name, validator, value)', () => {
   const description = Descriptor.description
@@ -9,7 +9,7 @@ describe('Descriptor.description(name, validator, value)', () => {
 
   it('returns a string', () => {
     const actual = description(name, Joi.any())
-    expect(actual).to.be.a('string')
+    expect(typeof actual).toBe('string')
   })
 
   describe('when the validator is .any()', () => {
@@ -17,7 +17,7 @@ describe('Descriptor.description(name, validator, value)', () => {
     describe('the first line', () => {
       it('contains the name with colours', () => {
         const lines = split(description(name, desc))
-        expect(lines[0]).to.equal(`  ${name.bold.cyan}`)
+        expect(lines[0]).toBe(`  ${name.bold.cyan}`)
       })
     })
     describe('with a description', () => {
@@ -26,14 +26,14 @@ describe('Descriptor.description(name, validator, value)', () => {
       describe('the first line', () => {
         it('contains the name with colours', () => {
           const lines = split(description(name, desc))
-          expect(lines[0]).to.equal(`  ${name.bold.cyan}`)
+          expect(lines[0]).toBe(`  ${name.bold.cyan}`)
         })
       })
 
       describe('the second line', () => {
         it('contains the human readable description', () => {
           const lines = split(description(name, desc))
-          expect(lines[1]).to.equal(`    ${text}`)
+          expect(lines[1]).toBe(`    ${text}`)
         })
       })
     })
@@ -44,7 +44,7 @@ describe('Descriptor.description(name, validator, value)', () => {
     describe('the first line', () => {
       it('contains the default value after the type', () => {
         const lines = split(description(name, desc))
-        expect(lines[0]).to.equal(`  ${name.bold.cyan} (${'number'.italic}), default: ${'8'.gray}`)
+        expect(lines[0]).toBe(`  ${name.bold.cyan} (${'number'.italic}), default: ${'8'.gray}`)
       })
     })
   })
@@ -54,35 +54,35 @@ describe('Descriptor.description(name, validator, value)', () => {
     describe('the first line', () => {
       it('contains the name and type with colours', () => {
         const lines = split(description(name, desc))
-        expect(lines[0]).to.equal(`  ${name.bold.cyan} (${'string'.italic})`)
+        expect(lines[0]).toBe(`  ${name.bold.cyan} (${'string'.italic})`)
       })
     })
 
     describe('and .uri({scheme})', () => {
-      context('when scheme is undefined', () => {
+      describe('when scheme is undefined', () => {
         const desc = Joi.string().uri()
         describe('the first line', () => {
           it('contains the name and type with colours', () => {
             const lines = split(description(name, desc))
-            expect(lines[0]).to.equal(`  ${name.bold.cyan} (${'uri'.italic})`)
+            expect(lines[0]).toBe(`  ${name.bold.cyan} (${'uri'.italic})`)
           })
         })
       })
-      context('when there is one scheme', () => {
+      describe('when there is one scheme', () => {
         const desc = Joi.string().uri({ scheme: 'http' })
         describe('the first line', () => {
           it('contains the name, type and declinations with colours', () => {
             const lines = split(description(name, desc))
-            expect(lines[0]).to.equal(`  ${name.bold.cyan} (${'uri <http>'.italic})`)
+            expect(lines[0]).toBe(`  ${name.bold.cyan} (${'uri <http>'.italic})`)
           })
         })
       })
-      context('when there are many schemes', () => {
+      describe('when there are many schemes', () => {
         const desc = Joi.string().uri({ scheme: ['http', 'https'] }).uri({ scheme: 'ftp' })
         describe('the first line', () => {
           it('contains the name, type and declinations with colours', () => {
             const lines = split(description(name, desc))
-            expect(lines[0]).to.equal(`  ${name.bold.cyan} (${'uri <http|https|ftp>'.italic})`)
+            expect(lines[0]).toBe(`  ${name.bold.cyan} (${'uri <http|https|ftp>'.italic})`)
           })
         })
       })
@@ -97,7 +97,7 @@ describe('Descriptor.description(name, validator, value)', () => {
         describe('the second line', () => {
           it('contains the overloaded value', () => {
             const lines = split(description(name, desc, value))
-            expect(lines[1]).to.equal(`    overwritten: ${value.bold.green}`)
+            expect(lines[1]).toBe(`    overwritten: ${value.bold.green}`)
           })
         })
       })
@@ -106,7 +106,7 @@ describe('Descriptor.description(name, validator, value)', () => {
         describe('the third line', () => {
           it('contains the overloaded value', () => {
             const lines = split(description(name, desc, value))
-            expect(lines[2]).to.equal(`    overwritten: ${value.bold.green}`)
+            expect(lines[2]).toBe(`    overwritten: ${value.bold.green}`)
           })
         })
       })
@@ -117,7 +117,7 @@ describe('Descriptor.description(name, validator, value)', () => {
       describe('the description', () => {
         it('does not mention it', () => {
           const lines = split(description(name, desc, value))
-          expect(lines).to.have.length(2)
+          expect(lines).toHaveLength(2)
         })
       })
     })
@@ -127,7 +127,7 @@ describe('Descriptor.description(name, validator, value)', () => {
       describe('the description', () => {
         it('does not mention it', () => {
           const lines = split(description(name, desc, value))
-          expect(lines).not.to.contain(value)
+          expect(lines).not.toContain(value)
         })
       })
     })
@@ -138,7 +138,7 @@ describe('Descriptor.description(name, validator, value)', () => {
       describe('the value line', () => {
         it('explains the validation error', () => {
           const lines = split(description(name, desc, value))
-          expect(lines[1]).to.equal(`    overwritten: ` + `invalid! "${name}" must be a number`.red)
+          expect(lines[1]).toBe(`    overwritten: ` + `invalid! "${name}" must be a number`.red)
         })
       })
     })

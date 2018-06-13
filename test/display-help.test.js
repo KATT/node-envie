@@ -1,8 +1,7 @@
-const sinon = require('sinon')
 const sink = require('stream-sink')
 const Joi = require('joi')
 const Envie = require('../')
-const { expect } = require('chai')
+
 require('chai').use(require('sinon-chai'))
 
 describe('new Envie({descriptions...})', () => {
@@ -24,18 +23,13 @@ describe('new Envie({descriptions...})', () => {
     const helpString = 'Hello World!'
     let helpStringStub
     beforeEach(() => {
-      helpStringStub = sinon.stub(envie, 'helpString')
-    })
-    afterEach(() => helpStringStub.restore())
-
-    beforeEach(() => {
-      helpStringStub.returns(helpString)
+      helpStringStub = jest.fn(() => helpString)
     })
 
     it('calls self.helpString() and writes the result to the target', () => {
       return envie.displayHelp(sink()).then((written) => {
-        expect(written).to.equal(helpString)
-        expect(helpStringStub).to.have.been.calledOnce()
+        expect(written).toBe(helpString)
+        expect(helpStringStub).toHaveBeenCalledTimes(1)
       })
     })
 
@@ -43,7 +37,7 @@ describe('new Envie({descriptions...})', () => {
       it('uses process.stderr as default', () => {
         // Given
         const testSink = sink()
-        const onPipe = sinon.spy((source) => {
+        const onPipe = jest.fn((source) => {
           source.unpipe(process.stderr)
           source.pipe(testSink)
         })
@@ -53,10 +47,10 @@ describe('new Envie({descriptions...})', () => {
         const target = envie.displayHelp()
 
         // Then
-        expect(target).to.equal(process.stderr)
+        expect(target).toBe(process.stderr)
         return testSink.then((actual) => {
-          expect(actual).to.equal(helpString)
-          expect(onPipe).to.have.been.calledOnce()
+          expect(actual).toBe(helpString)
+          expect(onPipe).toHaveBeenCalledTimes(1)
         })
       })
     })

@@ -1,20 +1,19 @@
-const Envie = require('../')
+const Envie = require('../src')
 const Joi = require('joi')
-const { expect } = require('chai')
 
 describe('Envie', () => {
   it('is a function', () => {
-    expect(Envie).to.be.a('function')
+    expect(typeof Envie).toBe('function')
   })
   describe('.Envie', () => {
     it('is the same function', () => {
-      expect(Envie.Envie).to.be.a('function').and.equal(Envie)
+      expect(Envie.Envie).toBe(Envie)
     })
   })
 
   describe('.Joi', () => {
     it('is the bundled Joi module', () => {
-      expect(Envie.Joi).to.equal(Joi)
+      expect(Envie.Joi).toBe(Joi)
     })
   })
 })

@@ -1,4 +1,4 @@
-const Descriptor = require('./lib/descriptor')
+const Descriptor = require('./descriptor')
 const Joi = require('joi')
 const stream = require('stream')
 
